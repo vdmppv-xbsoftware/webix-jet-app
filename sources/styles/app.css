@@ -56,3 +56,46 @@
 	font-size:20px;
 	vertical-align:middle;
 }
+
+.contacts-list-item .webix_icon {
+    font-size: 35px;
+}
+
+.contact-list-item-info {
+    display: inline-block;
+    line-height: 18px;
+    font-size: 16px;
+    margin-left: 20px;
+}
+
+.contact-list-item-info span:nth-last-child(1) {
+    font-size: 12px;
+}
+
+.webix_view .user-name {
+    margin-left: 20px;
+    font-size: 26px;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.contact-photo {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 10px;
+}
+
+.contact-info {
+    display: flex;
+    justify-content: left;
+    height: 500px;
+    margin: 10px;
+}
+
+.info-column {
+    margin: 25px 0 0 40px;
+    width: 200px;
+    font-size: 16px;
+}
