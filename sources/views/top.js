@@ -14,7 +14,7 @@ export default class TopView extends JetView {
 			width: 180,
 			layout: "y",
 			select: true,
-			template: "<span class='webix_icon #icon#'></span> #value# ",
+			template: "<span class='webix_icon #icon#'></span> #value#",
 			data: [
 				{value: "Contacts", id: "contactsView", icon: "wxi-user"},
 				{value: "Activities", id: "activitiesView", icon: "wxi-calendar"},

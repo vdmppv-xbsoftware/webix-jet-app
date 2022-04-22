@@ -5,7 +5,7 @@ const contactsCollection = new webix.DataCollection({
 	save: `rest->${url.urlContacts}`,
 	scheme: {
 		$init(data) {
-			data.FullName = `${data.FirstName} ${data.LastName}`;
+			data.value = `${data.FirstName} ${data.LastName}`;
 		}
 	}
 });

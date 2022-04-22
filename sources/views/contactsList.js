@@ -16,7 +16,7 @@ export default class ContactsList extends JetView {
 				css: "contacts-list-item",
 				template: `<span class="webix_icon wxi-user"></span> 
         <div class="contact-list-item-info">
-					<span>#FullName#</span><br>
+					<span>#value#</span><br>
 					<span>#Company#</span>
 				</div>`
 			}

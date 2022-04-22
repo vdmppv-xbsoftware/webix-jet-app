@@ -1,8 +1,16 @@
 import url from "../server/urls";
 
-const activityTypes = new webix.DataCollection({
+const activityTypesCollection = new webix.DataCollection({
 	url: url.urlActivityTypes,
-	save: `rest->${url.urlActivityTypes}`
+	save: `rest->${url.urlActivityTypes}`,
+	scheme: {
+		$init: (obj) => {
+			obj.value = obj.Value;
+		},
+		$save: (obj) => {
+			obj.Value = obj.value;
+		}
+	}
 });
 
-export default activityTypes;
+export default activityTypesCollection;

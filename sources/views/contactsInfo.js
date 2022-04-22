@@ -16,7 +16,7 @@ export default class ContactsInfo extends JetView {
 			cols: [
 				{
 					localId: CONTACTS_INFO_NAME_ID,
-					template: obj => `${obj.FullName || "Unknown"}`,
+					template: obj => `${obj.value || "Unknown"}`,
 					borderless: true,
 					css: "user-name"
 				},
