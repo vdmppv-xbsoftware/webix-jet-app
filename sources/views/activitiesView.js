@@ -41,7 +41,7 @@ export default class ActivitiesView extends JetView {
 				{
 					id: "TypeID",
 					header: ["Activity type", {content: "selectFilter"}],
-					sort: "int",
+					sort: "text",
 					options: activityTypesCollection,
 					fillspace: true
 				},
