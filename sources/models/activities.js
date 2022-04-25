@@ -6,6 +6,11 @@ const activitiesCollection = new webix.DataCollection({
 	scheme: {
 		$init: (data) => {
 			data.DueDate = webix.Date.strToDate("%Y-%m-%d %H:%i")(data.DueDate);
+		},
+		$save: (data) => {
+			if (typeof data.DueDate === "object") {
+				data.DueDate = webix.Date.dateToStr("%Y-%m-%d %H:%i")(data.DueDate);
+			}
 		}
 	}
 });

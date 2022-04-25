@@ -47,7 +47,7 @@ export default class ActivitiesView extends JetView {
 				},
 				{
 					id: "DueDate",
-					header: ["Due date", {content: "datepickerFilter"}],
+					header: ["Due date", {content: "datepickerFilter", compare: this.compareDates}],
 					sort: "date",
 					fillspace: true,
 					format: webix.Date.dateToStr("%d %F %Y")
@@ -95,7 +95,20 @@ export default class ActivitiesView extends JetView {
 	}
 
 	init() {
-		this.$$(ACTIVITIES_DATATABLE_ID).sync(activitiesCollection);
+		this.datatable = this.$$(ACTIVITIES_DATATABLE_ID);
+		this.datatable.sync(activitiesCollection);
+
+		this.on(activitiesCollection.data, "onStoreUpdated", () => {
+			this.datatable.filterByAll();
+		});
+
 		this.popup = this.ui(PopupEditor);
+	}
+
+	compareDates(value, filter) {
+		return webix.Date.equal(
+			webix.Date.dayStart(value).getTime(),
+			webix.Date.dayStart(filter).getTime()
+		);
 	}
 }

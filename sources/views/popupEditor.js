@@ -32,7 +32,6 @@ export default class PopupEditor extends JetView {
 						view: "select",
 						name: "TypeID",
 						label: "Type",
-						required: true,
 						options: activityTypesCollection,
 						invalidMessage: "Type selection is required"
 					},
@@ -40,7 +39,6 @@ export default class PopupEditor extends JetView {
 						view: "select",
 						name: "ContactID",
 						label: "Contact",
-						required: true,
 						options: contactsCollection,
 						invalidMessage: "Contact name is required"
 					},
@@ -84,18 +82,16 @@ export default class PopupEditor extends JetView {
 							{
 								view: "button",
 								value: "Cancel",
-								click: () => {
-									webix.confirm({
-										text: "Discard changes?"
-									}).then(() => this.closeForm());
-								}
+								click: () => this.closeForm()
 							}
 						]
 					}
 				],
 				rules: {
 					TypeID: webix.rules.isNotEmpty,
-					ContactID: webix.rules.isNotEmpty
+					ContactID: webix.rules.isNotEmpty,
+					DueDate: webix.rules.isNotEmpty,
+					Time: webix.rules.isNotEmpty
 				}
 			}
 		};
