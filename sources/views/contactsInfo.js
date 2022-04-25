@@ -32,17 +32,17 @@ export default class ContactsInfo extends JetView {
 			<div class='contact-info'>
 				<div class="contact-photo-status">
 					<img src="${obj.Photo || dummyPictureUrl}" class="contact-photo">
-					<div class="align-center">Status: ${obj.Status || "Unknown"} </div>
+					${obj.Status ? `<div class="align-center">Status: ${obj.Status} </div>` : ""}
 				</div>
 				<div class="info-column">
-					<span class='webix_icon mdi mdi-email'></span><span>${obj.Email || "Unknown"}</span> <br><br>
-					<span class='webix_icon mdi mdi-skype'></span><span>${obj.Skype || "Unknown"}</span> <br><br>
-					<span class='webix_icon mdi mdi-tag'></span><span>${obj.Job || "Unknown"}</span> <br><br>
-					<span class='webix_icon mdi mdi-briefcase'></span><span>${obj.Company || "Unknown"}</span> 
+					${obj.Email ? `<span class='webix_icon mdi mdi-email'></span><span>${obj.Email}</span> <br><br>` : ""}
+					${obj.Skype ? `<span class='webix_icon mdi mdi-skype'></span><span>${obj.Skype}</span> <br><br>` : ""} 
+					${obj.Job ? `<span class='webix_icon mdi mdi-tag'></span><span>${obj.Job}</span> <br><br>` : ""}
+					${obj.Company ? `<span class='webix_icon mdi mdi-briefcase'></span><span>${obj.Company}</span>` : ""} 
 				</div>
 				<div class="info-column">
-				  <span class='webix_icon mdi mdi-calendar'></span><span>${obj.Birthday || "Unknown"}</span> <br><br>
-				  <span class='webix_icon mdi mdi-map-marker'></span><span>${obj.Address || "Unknown"}</span> 
+				  ${obj.Birthday ? `<span class='webix_icon mdi mdi-calendar'></span><span>${obj.Birthday}</span> <br><br>` : ""}
+				  ${obj.Address ? `<span class='webix_icon mdi mdi-map-marker'></span><span>${obj.Address}</span>` : ""} 
 				</div>
 			</div>`
 		};
