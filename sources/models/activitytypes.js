@@ -4,11 +4,11 @@ const activityTypesCollection = new webix.DataCollection({
 	url: url.urlActivityTypes,
 	save: `rest->${url.urlActivityTypes}`,
 	scheme: {
-		$init: (obj) => {
-			obj.value = obj.Value;
+		$init: (data) => {
+			data.value = data.Value;
 		},
-		$save: (obj) => {
-			obj.Value = obj.value;
+		$save: (data) => {
+			data.Value = data.value;
 		}
 	}
 });

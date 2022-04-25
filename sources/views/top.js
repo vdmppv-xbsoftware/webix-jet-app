@@ -1,10 +1,15 @@
 import {JetView, plugins} from "webix-jet";
 
+const MENU_HEADER_ID = "header_menu";
 
 export default class TopView extends JetView {
 	config() {
 		let header = {
-			type: "header", template: this.app.config.name, css: "webix_header app_header"
+			type: "header",
+			view: "label",
+			label: "App",
+			localId: MENU_HEADER_ID,
+			css: "webix_header app_header"
 		};
 
 		let menu = {
@@ -19,7 +24,13 @@ export default class TopView extends JetView {
 				{value: "Contacts", id: "contactsView", icon: "wxi-user"},
 				{value: "Activities", id: "activitiesView", icon: "wxi-calendar"},
 				{value: "Settings", id: "settingsView", icon: "mdi mdi-cogs"}
-			]
+			],
+			on: {
+				onAfterSelect: () => {
+					const value = this.$$("top:menu").getSelectedItem().value;
+					this.$$(MENU_HEADER_ID).setValue(value);
+				}
+			}
 		};
 
 		let ui = {
