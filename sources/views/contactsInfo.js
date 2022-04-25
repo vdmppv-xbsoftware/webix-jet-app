@@ -61,7 +61,8 @@ export default class ContactsInfo extends JetView {
 				const contactId = this.getParam("id");
 				if (contactId) {
 					const contactItem = contactsCollection.getItem(contactId);
-					contactItem.Status = statusesCollection.getItem(contactItem.StatusID).Value;
+					const status = statusesCollection.getItem(contactItem.StatusID);
+					contactItem.Status = status ? status.Value : "";
 
 					this.$$(CONTACTS_INFO_NAME_ID).parse(contactItem);
 					this.$$(CONTACTS_INFO_ID).parse(contactItem);

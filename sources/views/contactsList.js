@@ -26,7 +26,9 @@ export default class ContactsList extends JetView {
 	init() {
 		this.list = this.$$(CONTACTS_LIST_ID);
 		this.list.sync(contactsCollection);
+	}
 
+	ready() {
 		contactsCollection.waitData.then(() => {
 			const selected = this.getParam("id") || contactsCollection.getFirstId();
 			this.setParam("id", selected, true);
