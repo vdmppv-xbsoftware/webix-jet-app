@@ -82,7 +82,16 @@ export default class PopupEditor extends JetView {
 							{
 								view: "button",
 								value: "Cancel",
-								click: () => this.closeForm()
+								click: () => {
+									if (this.form.isDirty()) {
+										webix.confirm({
+											text: "Discard changes?"
+										}).then(() => this.closeForm());
+									}
+									else {
+										this.closeForm();
+									}
+								}
 							}
 						]
 					}
