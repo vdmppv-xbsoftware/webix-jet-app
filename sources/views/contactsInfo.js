@@ -2,6 +2,8 @@ import {JetView} from "webix-jet";
 
 import contactsCollection from "../models/contacts";
 import statusesCollection from "../models/statuses";
+import ActivitiesTableView from "./activitiesTable";
+import PopupEditor from "./popupEditor";
 
 const CONTACTS_INFO_NAME_ID = "contacts_info_name";
 const CONTACTS_INFO_ID = "contacts_info";
@@ -26,6 +28,22 @@ export default class ContactsInfo extends JetView {
 			]
 		};
 
+		const addActivityButton = {
+			paddingX: 20,
+			cols: [
+				{ },
+				{
+					view: "button",
+					type: "icon",
+					icon: "wxi-plus-square",
+					css: "webix_primary",
+					label: "Add activity",
+					gravity: 0.5,
+					click: (() => this.popup.showPopupEditor(null, this.contactId))
+				}
+			]
+		};
+
 		const contactInfoBody = {
 			localId: CONTACTS_INFO_ID,
 			template: obj => `
@@ -47,9 +65,47 @@ export default class ContactsInfo extends JetView {
 			</div>`
 		};
 
-		return {
-			rows: [contactInfoHeader, contactInfoBody]
+		const contactTableTabbar = {
+			borderless: true,
+			view: "tabbar",
+			options: ["Activities", "Files"],
+			multiview: true,
+			value: "Activities"
 		};
+
+		const contactTableDetails = {
+			cells: [
+				{
+					id: "Activities",
+					rows: [
+						{$subview: new ActivitiesTableView(this.app, true)},
+						{
+							cols: [
+								{},
+								addActivityButton
+							]
+						}
+					]
+				},
+				{
+					id: "Files",
+					template: "files view"
+				}
+			]
+		};
+
+		return {
+			rows: [
+				contactInfoHeader,
+				contactInfoBody,
+				contactTableTabbar,
+				contactTableDetails
+			]
+		};
+	}
+
+	init() {
+		this.popup = this.ui(PopupEditor);
 	}
 
 	urlChange() {
@@ -58,9 +114,9 @@ export default class ContactsInfo extends JetView {
 			statusesCollection.waitData
 		])
 			.then(() => {
-				const contactId = this.getParam("id");
-				if (contactId) {
-					const contactItem = contactsCollection.getItem(contactId);
+				this.contactId = this.getParam("id");
+				if (this.contactId) {
+					const contactItem = contactsCollection.getItem(this.contactId);
 					const status = statusesCollection.getItem(contactItem.StatusID);
 					contactItem.Status = status ? status.Value : "";
 

@@ -7,6 +7,7 @@ import contactsCollection from "../models/contacts";
 const POPUP_ID = "popup";
 const POPUP_FORM_ID = "popup_form";
 const SAVE_BUTTON_ID = "save_btn";
+const CONTACT_FIELD_ID = "contact_field";
 
 export default class PopupEditor extends JetView {
 	config() {
@@ -38,6 +39,7 @@ export default class PopupEditor extends JetView {
 					{
 						view: "select",
 						name: "ContactID",
+						localId: CONTACT_FIELD_ID,
 						label: "Contact",
 						options: contactsCollection,
 						invalidMessage: "Contact name is required"
@@ -112,7 +114,12 @@ export default class PopupEditor extends JetView {
 		this.popupsavebtn = this.$$(SAVE_BUTTON_ID);
 	}
 
-	showPopupEditor(id) {
+	showPopupEditor(id, contactId) {
+		if (contactId) {
+			this.form.setValues({ContactID: contactsCollection.getItem(contactId)});
+			this.$$(CONTACT_FIELD_ID).disable();
+		}
+
 		if (id) {
 			const currentActivity = activitiesCollection.getItem(id);
 			if (currentActivity.DueDate) {
@@ -128,6 +135,7 @@ export default class PopupEditor extends JetView {
 			this.popup.getHead().setHTML("Add activity");
 			this.popupsavebtn.setValue("Add");
 		}
+
 		this.popup.show();
 	}
 
