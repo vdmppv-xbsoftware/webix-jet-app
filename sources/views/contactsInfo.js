@@ -3,6 +3,7 @@ import {JetView} from "webix-jet";
 import contactsCollection from "../models/contacts";
 import statusesCollection from "../models/statuses";
 import ActivitiesTableView from "./activitiesTable";
+import FilesView from "./filesView";
 import PopupEditor from "./popupEditor";
 
 const CONTACTS_INFO_NAME_ID = "contacts_info_name";
@@ -89,7 +90,7 @@ export default class ContactsInfo extends JetView {
 				},
 				{
 					id: "Files",
-					template: "files view"
+					rows: [{$subview: FilesView}]
 				}
 			]
 		};
