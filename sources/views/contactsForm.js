@@ -24,34 +24,29 @@ export default class ContactsForm extends JetView {
 		const firstCol = {
 			paddingX: 30,
 			margin: 20,
-			minWidth: 350,
 			rows: [
 				{
 					view: "text",
 					name: "FirstName",
 					label: "First Name",
-					required: true,
-					labelWidth: 100
+					required: true
 				},
 				{
 					view: "text",
 					name: "LastName",
 					label: "Last Name",
-					required: true,
-					labelWidth: 100
+					required: true
 				},
 				{
 					view: "datepicker",
 					name: "StartDate",
 					label: "Joining Date",
-					required: true,
-					labelWidth: 100
+					required: true
 				},
 				{
 					view: "richselect",
 					name: "StatusID",
 					label: "Status",
-					labelWidth: 100,
 					options: {
 						body: {
 							data: statusesCollection,
@@ -64,27 +59,23 @@ export default class ContactsForm extends JetView {
 					view: "text",
 					name: "Job",
 					label: "Job",
-					required: true,
-					labelWidth: 100
+					required: true
 				},
 				{
 					view: "text",
 					name: "Company",
 					label: "Company",
-					required: true,
-					labelWidth: 100
+					required: true
 				},
 				{
 					view: "text",
 					name: "Website",
-					label: "Website",
-					labelWidth: 100
+					label: "Website"
 				},
 				{
 					view: "text",
 					name: "Address",
-					label: "Address",
-					labelWidth: 100
+					label: "Address"
 				}
 			]
 		};
@@ -104,7 +95,7 @@ export default class ContactsForm extends JetView {
 						{
 							view: "uploader",
 							value: "Change photo",
-							width: 150,
+							width: 200,
 							autosend: false,
 							multiple: false,
 							on: {
@@ -113,7 +104,7 @@ export default class ContactsForm extends JetView {
 						},
 						{
 							view: "button",
-							width: 150,
+							width: 200,
 							value: "Delete photo",
 							css: "webix-primary",
 							click: () => {
@@ -128,33 +119,29 @@ export default class ContactsForm extends JetView {
 		const secondCol = {
 			paddingX: 30,
 			margin: 20,
-			minWidth: 350,
+			minWidth: 450,
 			rows: [
 				{
 					view: "text",
 					name: "Email",
-					label: "Email",
-					labelWidth: 100
+					label: "Email"
 				},
 				{
 					view: "text",
 					name: "Skype",
-					label: "Skype",
-					labelWidth: 100
+					label: "Skype"
 				},
 				{
 					view: "text",
 					name: "Phone",
 					label: "Phone",
-					required: true,
-					labelWidth: 100
+					required: true
 				},
 				{
 					view: "datepicker",
 					name: "Birthday",
 					label: "Birthday",
-					required: true,
-					labelWidth: 100
+					required: true
 				},
 				photoSection
 			]
@@ -163,7 +150,8 @@ export default class ContactsForm extends JetView {
 		const contactsFormButtons = {
 			view: "toolbar",
 			css: "form-toolbar",
-			margin: 10,
+			margin: 15,
+			paddingX: 45,
 			borderless: true,
 			elements: [
 				{
@@ -207,7 +195,10 @@ export default class ContactsForm extends JetView {
 						contactsFormButtons
 					]
 				}
-			]
+			],
+			elementsConfig: {
+				labelWidth: 150
+			}
 		};
 
 		return {
