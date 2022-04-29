@@ -98,6 +98,8 @@ export default class ContactsForm extends JetView {
 							width: 200,
 							autosend: false,
 							multiple: false,
+							css: "webix_primary",
+							accept: "image/png, image/gif, image/jpg",
 							on: {
 								onBeforeFileAdd: obj => this.loadPhoto(obj)
 							}
@@ -106,7 +108,7 @@ export default class ContactsForm extends JetView {
 							view: "button",
 							width: 200,
 							value: "Delete photo",
-							css: "webix-primary",
+							css: "webix_danger",
 							click: () => {
 								this.$$(CONTACT_PHOTO_ID).setValues({Photo: dummyPictureUrl});
 							}
@@ -149,7 +151,6 @@ export default class ContactsForm extends JetView {
 
 		const contactsFormButtons = {
 			view: "toolbar",
-			css: "form-toolbar",
 			margin: 15,
 			paddingX: 45,
 			borderless: true,
@@ -158,7 +159,6 @@ export default class ContactsForm extends JetView {
 					view: "button",
 					value: "Cancel",
 					width: 100,
-					css: "webix_primary",
 					click: () => this.cancelForm()
 				},
 				{
