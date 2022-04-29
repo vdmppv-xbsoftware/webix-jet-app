@@ -115,13 +115,15 @@ export default class PopupEditor extends JetView {
 	}
 
 	showPopupEditor(id, contactId) {
-		if (contactId) {
-			this.form.setValues({ContactID: contactsCollection.getItem(contactId)});
+		if (!id && contactId) {
+			const currentContact = contactsCollection.getItem(contactId);
+			this.form.setValues({ContactID: currentContact.id});
 			this.$$(CONTACT_FIELD_ID).disable();
 		}
 
 		if (id) {
 			const currentActivity = activitiesCollection.getItem(id);
+			if (contactId) this.$$(CONTACT_FIELD_ID).disable();
 			if (currentActivity.DueDate) {
 				currentActivity.DueDate = new Date(currentActivity.DueDate);
 				currentActivity.Time = webix.Date.strToDate("%H:%i")(currentActivity.DueDate);
