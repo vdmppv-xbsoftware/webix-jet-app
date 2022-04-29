@@ -1,6 +1,8 @@
 import {JetView} from "webix-jet";
 
+import activitiesCollection from "../models/activities";
 import contactsCollection from "../models/contacts";
+import filesCollection from "../models/files";
 import statusesCollection from "../models/statuses";
 import ActivitiesTableView from "./activitiesTable";
 import FilesView from "./filesView";
@@ -19,29 +21,13 @@ export default class ContactsInfo extends JetView {
 			cols: [
 				{
 					localId: CONTACTS_INFO_NAME_ID,
-					template: obj => `${obj.value || "Unknown"}`,
+					template: obj => `${obj.FirstName || "Unknown"} ${obj.LastName || "Unknown"}`,
 					borderless: true,
 					css: "user-name"
 				},
 				{},
-				{view: "button", gravity: 0.3, css: "webix_primary", type: "icon", icon: "wxi-trash", label: "Delete"},
-				{view: "button", gravity: 0.3, css: "webix_primary", type: "icon", icon: "wxi-pencil", label: "Edit"}
-			]
-		};
-
-		const addActivityButton = {
-			paddingX: 20,
-			cols: [
-				{ },
-				{
-					view: "button",
-					type: "icon",
-					icon: "wxi-plus-square",
-					css: "webix_primary",
-					label: "Add activity",
-					gravity: 0.5,
-					click: (() => this.popup.showPopupEditor(null, this.contactId))
-				}
+				{view: "button", gravity: 0.3, css: "webix_primary", type: "icon", icon: "wxi-trash", label: "Delete", click: () => this.deleteContact()},
+				{view: "button", gravity: 0.3, css: "webix_primary", type: "icon", icon: "wxi-pencil", label: "Edit", click: () => this.show(`contactsForm?id=${this.contactId}`)}
 			]
 		};
 
@@ -60,7 +46,7 @@ export default class ContactsInfo extends JetView {
 					${obj.Company ? `<span class='webix_icon mdi mdi-briefcase'></span><span>${obj.Company}</span>` : ""} 
 				</div>
 				<div class="info-column">
-				  ${obj.Birthday ? `<span class='webix_icon mdi mdi-calendar'></span><span>${obj.Birthday}</span> <br><br>` : ""}
+				  ${obj.Birthday ? `<span class='webix_icon mdi mdi-calendar'></span><span>${webix.Date.dateToStr("%Y-%m-%d")(obj.Birthday)}</span> <br><br>` : ""}
 				  ${obj.Address ? `<span class='webix_icon mdi mdi-map-marker'></span><span>${obj.Address}</span>` : ""} 
 				</div>
 			</div>`
@@ -72,6 +58,22 @@ export default class ContactsInfo extends JetView {
 			options: ["Activities", "Files"],
 			multiview: true,
 			value: "Activities"
+		};
+
+		const addActivityButton = {
+			paddingX: 20,
+			cols: [
+				{ },
+				{
+					view: "button",
+					type: "icon",
+					icon: "wxi-plus-square",
+					css: "webix_primary",
+					label: "Add activity",
+					gravity: 0.5,
+					click: (() => this.popup.showPopupEditor(null, this.contactId))
+				}
+			]
 		};
 
 		const contactTableDetails = {
@@ -107,6 +109,7 @@ export default class ContactsInfo extends JetView {
 
 	init() {
 		this.popup = this.ui(PopupEditor);
+		this.contactId = this.getParam("id");
 	}
 
 	urlChange() {
@@ -125,5 +128,25 @@ export default class ContactsInfo extends JetView {
 					this.$$(CONTACTS_INFO_ID).parse(contactItem);
 				}
 			});
+	}
+
+	deleteContact() {
+		webix.confirm({text: "Are you sure you want to delete this contact and all related files and activities"}).then(() => {
+			activitiesCollection.data.each((activity) => {
+				if (+activity.ContactID === +this.contactId) {
+					activitiesCollection.remove(activity.id);
+				}
+			});
+
+			filesCollection.data.each((file) => {
+				if (+file.ContactID === +this.contactId) {
+					filesCollection.remove(file.id);
+				}
+			});
+
+			contactsCollection.remove(this.contactId);
+
+			this.app.callEvent("onContactSelect");
+		});
 	}
 }

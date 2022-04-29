@@ -18,6 +18,7 @@ export default class ActivitiesTableView extends JetView {
 			view: "datatable",
 			localId: ACTIVITIES_DATATABLE_ID,
 			select: "row",
+			scrollX: false,
 			columns: [
 				{
 					id: "State",
