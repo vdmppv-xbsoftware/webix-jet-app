@@ -12,9 +12,9 @@ export default class ContactsView extends JetView {
 			select: true,
 			width: 300,
 			type: {
-				height: 45,
+				height: 50,
 				css: "contacts-list-item",
-				template: `<span class="webix_icon wxi-user"></span> 
+				template: `<img class="list-item-pic" src="#Photo#"></img> 
 				<div class="contact-list-item-info">
 				<span>#FirstName# #LastName#</span><br>
 				<span>#Company#</span>
