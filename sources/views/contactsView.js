@@ -49,6 +49,13 @@ export default class ContactsView extends JetView {
 	init() {
 		this.list = this.$$(CONTACTS_LIST_ID);
 		this.list.sync(contactsCollection);
+	}
+
+	ready() {
+		contactsCollection.waitData.then(() => {
+			const selected = this.getParam("id") || contactsCollection.getFirstId();
+			this.list.select(selected);
+		});
 
 		this.on(this.app, "onContactSelect", (id) => {
 			this.list.unselectAll();
@@ -56,22 +63,9 @@ export default class ContactsView extends JetView {
 			this.list.select(this.list.getFirstId());
 			if (id) this.list.select(id);
 		});
-	}
 
-	ready() {
-		contactsCollection.waitData.then(() => {
-			const selected = this.getParam("id") || contactsCollection.getFirstId();
-			this.setParam("id", selected, true);
-			this.on(this.list, "onAfterSelect", (id) => {
-				this.show(`contactsInfo?id=${id}`);
-			});
-
-			this.list.select(selected);
+		this.on(this.list, "onAfterSelect", (id) => {
+			this.show(`contactsInfo?id=${id}`);
 		});
-	}
-
-	urlChange() {
-		const url = this.getParam("id");
-		if (!url) this.list.unselectAll();
 	}
 }
