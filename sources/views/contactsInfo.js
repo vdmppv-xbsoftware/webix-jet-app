@@ -25,9 +25,24 @@ export default class ContactsInfo extends JetView {
 					borderless: true,
 					css: "user-name"
 				},
-				{},
-				{view: "button", gravity: 0.3, css: "webix_primary", type: "icon", icon: "wxi-trash", label: "Delete", click: () => this.deleteContact()},
-				{view: "button", gravity: 0.3, css: "webix_primary", type: "icon", icon: "wxi-pencil", label: "Edit", click: () => this.show(`contactsForm?id=${this.contactId}`)}
+				{
+					view: "button",
+					gravity: 0.2,
+					css: "webix_primary",
+					type: "icon",
+					icon: "wxi-trash",
+					label: "Delete",
+					click: () => this.deleteContact()
+				},
+				{
+					view: "button",
+					gravity: 0.2,
+					css: "webix_primary",
+					type: "icon",
+					icon: "wxi-pencil",
+					label: "Edit",
+					click: () => this.show(`contactsForm?id=${this.contactId}`)
+				}
 			]
 		};
 
@@ -36,7 +51,7 @@ export default class ContactsInfo extends JetView {
 			template: obj => `
 			<div class='contact-info'>
 				<div class="contact-photo-status">
-					<img src="${obj.Photo ? obj.Photo : dummyPictureUrl}" class="contact-photo">
+					<img src="${obj.Photo || dummyPictureUrl}" class="contact-photo">
 					${obj.Status ? `<div class="align-center">Status: ${obj.Status} </div>` : ""}
 				</div>
 				<div class="info-column">

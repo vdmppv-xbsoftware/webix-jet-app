@@ -60,8 +60,6 @@
 .contacts-list-item {
     display: flex;
     white-space: normal;
-    overflow: visible !important;
-    height: auto !important;
 }
 
 .contacts-list-item .webix_icon {

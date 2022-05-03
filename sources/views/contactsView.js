@@ -14,9 +14,9 @@ export default class ContactsView extends JetView {
 			select: true,
 			width: 300,
 			type: {
-				height: 50,
+				height: "auto",
 				css: "contacts-list-item",
-				template: obj => `<img class='list-item-pic' src="${obj.Photo ? obj.Photo : dummyPictureUrl}"></img>
+				template: obj => `<img class='list-item-pic' src="${obj.Photo || dummyPictureUrl}"></img>
 					<div class="contact-list-item-info">
 						<span>${obj.FirstName} ${obj.LastName}</span> <br>
 						<span>${obj.Company}</span>
@@ -63,10 +63,11 @@ export default class ContactsView extends JetView {
 		});
 
 		this.on(this.app, "onContactSelect", (id) => {
-			this.list.unselectAll();
-
-			this.list.select(this.list.getFirstId());
 			if (id) this.list.select(id);
+			else {
+				const firstItem = this.list.getFirstId();
+				if (firstItem) this.select(firstItem);
+			}
 		});
 
 		this.on(this.list, "onAfterSelect", (id) => {

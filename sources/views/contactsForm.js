@@ -87,7 +87,7 @@ export default class ContactsForm extends JetView {
 					width: 220,
 					height: 220,
 					borderless: true,
-					template: obj => `<img src="${obj.Photo ? obj.Photo : dummyPictureUrl}" class="contact-photo">`
+					template: obj => `<img src="${obj.Photo || dummyPictureUrl}" class="contact-photo">`
 				},
 				{
 					rows: [
@@ -110,7 +110,7 @@ export default class ContactsForm extends JetView {
 							value: "Delete photo",
 							css: "webix_danger",
 							click: () => {
-								this.$$(CONTACT_PHOTO_ID).setValues({Photo: dummyPictureUrl});
+								this.$$(CONTACT_PHOTO_ID).setValues({Photo: ""});
 							}
 						}
 					]
