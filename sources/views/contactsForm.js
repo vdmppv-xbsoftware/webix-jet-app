@@ -22,7 +22,7 @@ export default class ContactsForm extends JetView {
 		};
 
 		const firstCol = {
-			paddingX: 30,
+			minWidth: 300,
 			margin: 20,
 			rows: [
 				{
@@ -99,7 +99,7 @@ export default class ContactsForm extends JetView {
 							autosend: false,
 							multiple: false,
 							css: "webix_primary",
-							accept: "image/png, image/gif, image/jpg",
+							accept: "image/png, image/gif, image/jpeg",
 							on: {
 								onBeforeFileAdd: obj => this.loadPhoto(obj)
 							}
@@ -119,9 +119,8 @@ export default class ContactsForm extends JetView {
 		};
 
 		const secondCol = {
-			paddingX: 30,
 			margin: 20,
-			minWidth: 450,
+			minWidth: 500,
 			rows: [
 				{
 					view: "text",
@@ -181,7 +180,8 @@ export default class ContactsForm extends JetView {
 			rows: [
 				contactsFormHeader,
 				{
-					paddingY: 30,
+					paddingX: 40,
+					margin: 20,
 					borderless: true,
 					cols: [
 						firstCol,
@@ -197,7 +197,7 @@ export default class ContactsForm extends JetView {
 				}
 			],
 			elementsConfig: {
-				labelWidth: 150
+				labelWidth: 100
 			}
 		};
 
@@ -210,8 +210,6 @@ export default class ContactsForm extends JetView {
 
 	urlChange() {
 		this.contactform = this.$$(CONTACTS_FORM_ID);
-		this.contactform.clear();
-		this.contactform.clearValidation();
 
 		this.header = this.$$(CONTACTS_FORM_HEADER_ID);
 		this.savebtn = this.$$(CONTACT_SAVE_BTN_ID);
@@ -236,9 +234,6 @@ export default class ContactsForm extends JetView {
 
 	cancelForm() {
 		this.app.callEvent("onContactSelect", [this.contactId]);
-
-		this.contactform.clear();
-		this.contactform.clearValidation();
 	}
 
 	saveContact() {
@@ -257,9 +252,6 @@ export default class ContactsForm extends JetView {
 						this.app.callEvent("onContactSelect", [res.id]);
 					});
 			}
-
-			this.contactform.clear();
-			this.contactform.clearValidation();
 		}
 	}
 

@@ -116,8 +116,7 @@ export default class PopupEditor extends JetView {
 
 	showPopupEditor(id, contactId) {
 		if (!id && contactId) {
-			const currentContact = contactsCollection.getItem(contactId);
-			this.form.setValues({ContactID: currentContact.id});
+			this.form.setValues({ContactID: contactId});
 			this.$$(CONTACT_FIELD_ID).disable();
 		}
 
