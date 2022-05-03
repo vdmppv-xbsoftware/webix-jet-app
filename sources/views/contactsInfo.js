@@ -145,19 +145,34 @@ export default class ContactsInfo extends JetView {
 			});
 	}
 
+
 	deleteContact() {
 		webix.confirm({text: "Are you sure you want to delete this contact and all related files and activities"}).then(() => {
-			activitiesCollection.data.each((activity) => {
-				if (+activity.ContactID === +this.contactId) {
-					activitiesCollection.remove(activity.id);
+			const activities = [];
+			const files = [];
+			activitiesCollection.data.each((item) => {
+				if (+item.ContactID === +this.contactId) {
+					activities.push(item);
 				}
 			});
 
-			filesCollection.data.each((file) => {
-				if (+file.ContactID === +this.contactId) {
-					filesCollection.remove(file.id);
+			for (let activity of activities) {
+				if (activity) {
+					activitiesCollection.remove(activity.id);
+				}
+			}
+
+			filesCollection.data.each((item) => {
+				if (+item.ContactID === +this.contactId) {
+					files.push(item);
 				}
 			});
+
+			for (let file of files) {
+				if (file) {
+					filesCollection.remove(file.id);
+				}
+			}
 
 			contactsCollection.remove(this.contactId);
 
