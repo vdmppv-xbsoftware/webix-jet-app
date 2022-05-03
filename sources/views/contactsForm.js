@@ -125,7 +125,8 @@ export default class ContactsForm extends JetView {
 				{
 					view: "text",
 					name: "Email",
-					label: "Email"
+					label: "Email",
+					required: true
 				},
 				{
 					view: "text",
@@ -198,6 +199,10 @@ export default class ContactsForm extends JetView {
 			],
 			elementsConfig: {
 				labelWidth: 100
+			},
+			rules: {
+				Phone: webix.rules.isNumber,
+				Email: webix.rules.isEmail
 			}
 		};
 
