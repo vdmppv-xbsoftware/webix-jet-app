@@ -11,6 +11,8 @@ import PopupEditor from "./popupEditor";
 const CONTACTS_INFO_NAME_ID = "contacts_info_name";
 const CONTACTS_INFO_ID = "contacts_info";
 
+const dummyPictureUrl = "https://www.vippng.com/png/full/412-4125354_person-circle-comments-profile-icon-png-white-transparent.png";
+
 export default class ContactsInfo extends JetView {
 	config() {
 		const contactInfoHeader = {
@@ -34,7 +36,7 @@ export default class ContactsInfo extends JetView {
 			template: obj => `
 			<div class='contact-info'>
 				<div class="contact-photo-status">
-					<img src="${obj.Photo}" class="contact-photo">
+					<img src="${obj.Photo ? obj.Photo : dummyPictureUrl}" class="contact-photo">
 					${obj.Status ? `<div class="align-center">Status: ${obj.Status} </div>` : ""}
 				</div>
 				<div class="info-column">

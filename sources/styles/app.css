@@ -57,6 +57,13 @@
 	vertical-align:middle;
 }
 
+.contacts-list-item {
+    display: flex;
+    white-space: normal;
+    overflow: visible !important;
+    height: auto !important;
+}
+
 .contacts-list-item .webix_icon {
     font-size: 35px;
 }
@@ -68,7 +75,6 @@
 }
 
 .contact-list-item-info {
-    display: inline-block;
     line-height: 18px;
     font-size: 16px;
     margin-left: 15px;

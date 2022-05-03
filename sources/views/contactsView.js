@@ -4,6 +4,8 @@ import contactsCollection from "../models/contacts";
 
 const CONTACTS_LIST_ID = "contacts_list";
 
+const dummyPictureUrl = "https://www.vippng.com/png/full/412-4125354_person-circle-comments-profile-icon-png-white-transparent.png";
+
 export default class ContactsView extends JetView {
 	config() {
 		const contactsList = {
@@ -14,11 +16,11 @@ export default class ContactsView extends JetView {
 			type: {
 				height: 50,
 				css: "contacts-list-item",
-				template: `<img class="list-item-pic" src="#Photo#"></img> 
-				<div class="contact-list-item-info">
-				<span>#FirstName# #LastName#</span><br>
-				<span>#Company#</span>
-				</div>`
+				template: obj => `<img class='list-item-pic' src="${obj.Photo ? obj.Photo : dummyPictureUrl}"></img>
+					<div class="contact-list-item-info">
+						<span>${obj.FirstName} ${obj.LastName}</span> <br>
+						<span>${obj.Company}</span>
+					</div>`
 			}
 		};
 
@@ -30,7 +32,10 @@ export default class ContactsView extends JetView {
 			label: "Add Contact",
 			align: "center",
 			css: "webix_primary",
-			click: () => this.show("contactsForm")
+			click: () => {
+				this.show("contactsForm");
+				this.list.unselectAll();
+			}
 		};
 
 		return {

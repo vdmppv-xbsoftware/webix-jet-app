@@ -87,7 +87,7 @@ export default class ContactsForm extends JetView {
 					width: 220,
 					height: 220,
 					borderless: true,
-					template: obj => `<img src="${obj.Photo}" class="contact-photo">`
+					template: obj => `<img src="${obj.Photo ? obj.Photo : dummyPictureUrl}" class="contact-photo">`
 				},
 				{
 					rows: [

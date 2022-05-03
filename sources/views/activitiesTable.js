@@ -121,7 +121,7 @@ export default class ActivitiesTableView extends JetView {
 
 	filterTableByContact(id) {
 		if (id) {
-			this.$$(ACTIVITIES_DATATABLE_ID).filter("#ContactID#", this.contactId, true);
+			this.datatable.filter("#ContactID#", this.contactId, true);
 		}
 	}
 }
