@@ -1,7 +1,12 @@
 import {JetView} from "webix-jet";
 
+import activitiesCollection from "../models/activities";
 import contactsCollection from "../models/contacts";
+import filesCollection from "../models/files";
 import statusesCollection from "../models/statuses";
+import ActivitiesTableView from "./activitiesTable";
+import FilesView from "./filesView";
+import PopupEditor from "./popupEditor";
 
 const CONTACTS_INFO_NAME_ID = "contacts_info_name";
 const CONTACTS_INFO_ID = "contacts_info";
@@ -16,13 +21,28 @@ export default class ContactsInfo extends JetView {
 			cols: [
 				{
 					localId: CONTACTS_INFO_NAME_ID,
-					template: obj => `${obj.value || "Unknown"}`,
+					template: obj => `${obj.FirstName || "Unknown"} ${obj.LastName || "Unknown"}`,
 					borderless: true,
 					css: "user-name"
 				},
-				{},
-				{view: "button", gravity: 0.3, css: "webix_primary", type: "icon", icon: "wxi-trash", label: "Delete"},
-				{view: "button", gravity: 0.3, css: "webix_primary", type: "icon", icon: "wxi-pencil", label: "Edit"}
+				{
+					view: "button",
+					gravity: 0.2,
+					css: "webix_primary",
+					type: "icon",
+					icon: "wxi-trash",
+					label: "Delete",
+					click: () => this.deleteContact()
+				},
+				{
+					view: "button",
+					gravity: 0.2,
+					css: "webix_primary",
+					type: "icon",
+					icon: "wxi-pencil",
+					label: "Edit",
+					click: () => this.show(`contactsForm?id=${this.contactId}`)
+				}
 			]
 		};
 
@@ -41,15 +61,70 @@ export default class ContactsInfo extends JetView {
 					${obj.Company ? `<span class='webix_icon mdi mdi-briefcase'></span><span>${obj.Company}</span>` : ""} 
 				</div>
 				<div class="info-column">
-				  ${obj.Birthday ? `<span class='webix_icon mdi mdi-calendar'></span><span>${obj.Birthday}</span> <br><br>` : ""}
+				  ${obj.Birthday ? `<span class='webix_icon mdi mdi-calendar'></span><span>${webix.Date.dateToStr("%Y-%m-%d")(obj.Birthday)}</span> <br><br>` : ""}
 				  ${obj.Address ? `<span class='webix_icon mdi mdi-map-marker'></span><span>${obj.Address}</span>` : ""} 
 				</div>
 			</div>`
 		};
 
-		return {
-			rows: [contactInfoHeader, contactInfoBody]
+		const contactTableTabbar = {
+			borderless: true,
+			view: "tabbar",
+			options: ["Activities", "Files"],
+			multiview: true,
+			value: "Activities"
 		};
+
+		const addActivityButton = {
+			paddingX: 20,
+			cols: [
+				{ },
+				{
+					view: "button",
+					type: "icon",
+					icon: "wxi-plus-square",
+					css: "webix_primary",
+					label: "Add activity",
+					gravity: 0.5,
+					click: (() => this.popup.showPopupEditor(null, this.contactId))
+				}
+			]
+		};
+
+		const contactTableDetails = {
+			cells: [
+				{
+					id: "Activities",
+					rows: [
+						{$subview: new ActivitiesTableView(this.app, true)},
+						{
+							cols: [
+								{},
+								addActivityButton
+							]
+						}
+					]
+				},
+				{
+					id: "Files",
+					rows: [{$subview: FilesView}]
+				}
+			]
+		};
+
+		return {
+			rows: [
+				contactInfoHeader,
+				contactInfoBody,
+				contactTableTabbar,
+				contactTableDetails
+			]
+		};
+	}
+
+	init() {
+		this.popup = this.ui(PopupEditor);
+		this.contactId = this.getParam("id");
 	}
 
 	urlChange() {
@@ -58,9 +133,9 @@ export default class ContactsInfo extends JetView {
 			statusesCollection.waitData
 		])
 			.then(() => {
-				const contactId = this.getParam("id");
-				if (contactId) {
-					const contactItem = contactsCollection.getItem(contactId);
+				this.contactId = this.getParam("id");
+				if (this.contactId) {
+					const contactItem = contactsCollection.getItem(this.contactId);
 					const status = statusesCollection.getItem(contactItem.StatusID);
 					contactItem.Status = status ? status.Value : "";
 
@@ -68,5 +143,30 @@ export default class ContactsInfo extends JetView {
 					this.$$(CONTACTS_INFO_ID).parse(contactItem);
 				}
 			});
+	}
+
+
+	deleteContact() {
+		webix.confirm({text: "Are you sure you want to delete this contact and all related files and activities"}).then(() => {
+			const activities = [];
+			const files = [];
+			activitiesCollection.data.each((item) => {
+				if (+item.ContactID === +this.contactId) {
+					activities.push(item.id);
+				}
+			});
+
+			filesCollection.data.each((item) => {
+				if (+item.ContactID === +this.contactId) {
+					files.push(item.id);
+				}
+			});
+
+			activitiesCollection.remove(activities);
+			filesCollection.remove(files);
+			contactsCollection.remove(this.contactId);
+
+			this.app.callEvent("onContactSelect");
+		});
 	}
 }

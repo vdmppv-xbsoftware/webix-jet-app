@@ -57,22 +57,33 @@
 	vertical-align:middle;
 }
 
+.contacts-list-item {
+    display: flex;
+    white-space: normal;
+}
+
 .contacts-list-item .webix_icon {
     font-size: 35px;
 }
 
+.list-item-pic {
+    vertical-align: top;
+    width: 40px;
+    height: 40px;
+}
+
 .contact-list-item-info {
-    display: inline-block;
     line-height: 18px;
     font-size: 16px;
-    margin-left: 20px;
+    margin-left: 15px;
 }
 
 .contact-list-item-info span:nth-last-child(1) {
     font-size: 12px;
 }
 
-.webix_view .user-name {
+.webix_view .user-name, .form-header .webix_el_box {
+    margin-top: 10px;
     margin-left: 20px;
     font-size: 26px;
 }
@@ -90,8 +101,8 @@
 .contact-info {
     display: flex;
     justify-content: left;
-    height: 500px;
-    margin: 10px;
+    height: 300px;
+    margin: 10px 0px 0px 10px;
 }
 
 .info-column {
