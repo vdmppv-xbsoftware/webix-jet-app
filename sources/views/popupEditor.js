@@ -11,11 +11,12 @@ const CONTACT_FIELD_ID = "contact_field";
 
 export default class PopupEditor extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			view: "window",
 			modal: true,
 			localId: POPUP_ID,
-			head: "Activity",
+			head: _("Activity"),
 			position: "center",
 			width: 700,
 			height: 700,
@@ -26,13 +27,13 @@ export default class PopupEditor extends JetView {
 					{
 						view: "textarea",
 						name: "Details",
-						label: "Details",
+						label: _("Details"),
 						height: 100
 					},
 					{
 						view: "select",
 						name: "TypeID",
-						label: "Type",
+						label: _("Type"),
 						options: activityTypesCollection,
 						invalidMessage: "Type selection is required"
 					},
@@ -40,7 +41,7 @@ export default class PopupEditor extends JetView {
 						view: "select",
 						name: "ContactID",
 						localId: CONTACT_FIELD_ID,
-						label: "Contact",
+						label: _("Contact"),
 						options: contactsCollection,
 						invalidMessage: "Contact name is required"
 					},
@@ -51,7 +52,7 @@ export default class PopupEditor extends JetView {
 								view: "datepicker",
 								type: "date",
 								name: "DueDate",
-								label: "Date",
+								label: _("Date"),
 								format: webix.Date.dateToStr("%d %F %Y"),
 								invalidMessage: "Date selection is required"
 							},
@@ -59,7 +60,7 @@ export default class PopupEditor extends JetView {
 								view: "datepicker",
 								type: "time",
 								name: "Time",
-								label: "Time",
+								label: _("Time"),
 								invalidMessage: "Time selection is required"
 							}
 						]
@@ -67,7 +68,7 @@ export default class PopupEditor extends JetView {
 					{
 						view: "checkbox",
 						name: "State",
-						labelRight: "Completed",
+						labelRight: _("Completed"),
 						labelWidth: 0,
 						checkValue: "Open",
 						uncheckValue: "Close"
@@ -83,11 +84,12 @@ export default class PopupEditor extends JetView {
 							},
 							{
 								view: "button",
-								value: "Cancel",
+								value: _("Cancel"),
 								click: () => {
 									if (this.form.isDirty()) {
 										webix.confirm({
-											text: "Discard changes?"
+											text: _("Discard changes?"),
+											cancel: _("Cancel")
 										}).then(() => this.closeForm());
 									}
 									else {
@@ -103,6 +105,9 @@ export default class PopupEditor extends JetView {
 					ContactID: webix.rules.isNotEmpty,
 					DueDate: webix.rules.isNotEmpty,
 					Time: webix.rules.isNotEmpty
+				},
+				elementsConfig: {
+					labelWidth: 100
 				}
 			}
 		};
@@ -115,6 +120,7 @@ export default class PopupEditor extends JetView {
 	}
 
 	showPopupEditor(id, contactId) {
+		const _ = this.app.getService("locale")._;
 		if (!id && contactId) {
 			this.form.setValues({ContactID: contactId});
 			this.$$(CONTACT_FIELD_ID).disable();
@@ -129,28 +135,29 @@ export default class PopupEditor extends JetView {
 			}
 
 			this.form.setValues(currentActivity);
-			this.popup.getHead().setHTML("Edit activity");
-			this.popupsavebtn.setValue("Save");
+			this.popup.getHead().setHTML(_("Edit activity"));
+			this.popupsavebtn.setValue(_("Save"));
 		}
 		else {
-			this.popup.getHead().setHTML("Add activity");
-			this.popupsavebtn.setValue("Add");
+			this.popup.getHead().setHTML(_("Add activity"));
+			this.popupsavebtn.setValue(_("Add"));
 		}
 
 		this.popup.show();
 	}
 
 	saveForm() {
+		const _ = this.app.getService("locale")._;
 		if (this.form.validate()) {
 			const values = this.form.getValues();
 			values.DueDate = this.dateToStr(values);
 			if (values.id) {
 				activitiesCollection.updateItem(values.id, values);
-				webix.message({text: "Activity was successfully saved"});
+				webix.message({text: _("Activity was successfully saved")});
 			}
 			else {
 				activitiesCollection.add(values);
-				webix.message({text: "Activity was successfully added"});
+				webix.message({text: _("Activity was successfully added")});
 			}
 
 			this.closeForm();

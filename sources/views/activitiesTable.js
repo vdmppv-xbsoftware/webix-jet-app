@@ -14,6 +14,8 @@ export default class ActivitiesTableView extends JetView {
 	}
 
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const activitiesDatatable = {
 			view: "datatable",
 			localId: ACTIVITIES_DATATABLE_ID,
@@ -30,29 +32,28 @@ export default class ActivitiesTableView extends JetView {
 				},
 				{
 					id: "TypeID",
-					header: ["Activity type", {content: "selectFilter"}],
+					header: [_("Activity type"), {content: "selectFilter"}],
 					sort: "text",
 					options: activityTypesCollection,
 					fillspace: true
 				},
 				{
 					id: "DueDate",
-					header: ["Due date", {content: "datepickerFilter", compare: this.compareDates}],
+					header: [_("Due date"), {content: "datepickerFilter", compare: this.compareDates}],
 					sort: "date",
 					fillspace: true,
 					format: webix.Date.dateToStr("%d %F %Y")
 				},
 				{
 					id: "Details",
-					template: "#Details#",
-					header: ["Details", {content: "textFilter"}],
+					header: [_("Details"), {content: "textFilter"}],
 					fillspace: true,
 					sort: "string"
 				},
 				{
 					id: "ContactID",
 					fillspace: true,
-					header: ["Contact", {content: "selectFilter"}],
+					header: [_("Contact"), {content: "selectFilter"}],
 					options: contactsCollection,
 					sort: "text",
 					hidden: this.hideInfo
@@ -70,7 +71,7 @@ export default class ActivitiesTableView extends JetView {
 			],
 			onClick: {
 				"wxi-trash": (e, id) => {
-					webix.confirm({text: "Are you sure you want to delete this activity? Deleting cannot be undone!"}).then(() => {
+					webix.confirm({text: _("Are you sure you want to delete this activity? Deleting cannot be undone!")}).then(() => {
 						activitiesCollection.remove(id);
 					});
 					return false;

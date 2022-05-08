@@ -13,6 +13,7 @@ function sortBySize(a, b) {
 
 export default class FilesView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		const filesDatatable = {
 			view: "datatable",
 			localId: FILES_DATATABLE_ID,
@@ -20,20 +21,20 @@ export default class FilesView extends JetView {
 			columns: [
 				{
 					id: "name",
-					header: "Name",
+					header: _("Name"),
 					fillspace: true,
 					sort: "text"
 				},
 				{
 					id: "lastModifiedDate",
-					header: "Change date",
+					header: _("Change date"),
 					fillspace: true,
 					sort: "date",
 					format: webix.Date.dateToStr("%d %F %Y")
 				},
 				{
 					id: "sizetext",
-					header: "Size",
+					header: _("Size"),
 					fillspace: true,
 					sort: sortBySize
 				},
@@ -45,7 +46,7 @@ export default class FilesView extends JetView {
 			],
 			onClick: {
 				"wxi-trash": (e, id) => {
-					webix.confirm({text: "Delete file?"}).then(() => {
+					webix.confirm({text: _("Delete file?")}).then(() => {
 						filesCollection.remove(id);
 						this.$$(FILES_DATATABLE_ID).filter("#ContactID", this.contactId);
 					});
@@ -62,7 +63,7 @@ export default class FilesView extends JetView {
 			type: "icon",
 			icon: "mdi mdi-cloud-upload",
 			css: "webix_primary",
-			label: "Upload file",
+			label: _("Upload file"),
 			on: {
 				onBeforeFileAdd: (file) => {
 					file.lastModifiedDate = file.file.lastModifiedDate;

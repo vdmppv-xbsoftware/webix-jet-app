@@ -15,6 +15,7 @@ const dummyPictureUrl = "https://www.vippng.com/png/full/412-4125354_person-circ
 
 export default class ContactsInfo extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		const contactInfoHeader = {
 			view: "toolbar",
 			padding: 15,
@@ -31,7 +32,7 @@ export default class ContactsInfo extends JetView {
 					css: "webix_primary",
 					type: "icon",
 					icon: "wxi-trash",
-					label: "Delete",
+					label: _("Delete"),
 					click: () => this.deleteContact()
 				},
 				{
@@ -40,7 +41,7 @@ export default class ContactsInfo extends JetView {
 					css: "webix_primary",
 					type: "icon",
 					icon: "wxi-pencil",
-					label: "Edit",
+					label: _("Edit"),
 					click: () => this.show(`contactsForm?id=${this.contactId}`)
 				}
 			]
@@ -52,7 +53,7 @@ export default class ContactsInfo extends JetView {
 			<div class='contact-info'>
 				<div class="contact-photo-status">
 					<img src="${obj.Photo || dummyPictureUrl}" class="contact-photo">
-					${obj.Status ? `<div class="align-center">Status: ${obj.Status} </div>` : ""}
+					${obj.Status ? `<div class="align-center">${_("Status")}: ${obj.Status} </div>` : ""}
 				</div>
 				<div class="info-column">
 					${obj.Email ? `<span class='webix_icon mdi mdi-email'></span><span>${obj.Email}</span> <br><br>` : ""}
@@ -70,7 +71,16 @@ export default class ContactsInfo extends JetView {
 		const contactTableTabbar = {
 			borderless: true,
 			view: "tabbar",
-			options: ["Activities", "Files"],
+			options: [
+				{
+					id: "Activities",
+					value: _("Activities")
+				},
+				{
+					id: "Files",
+					value: _("Files")
+				}
+			],
 			multiview: true,
 			value: "Activities"
 		};
@@ -84,7 +94,7 @@ export default class ContactsInfo extends JetView {
 					type: "icon",
 					icon: "wxi-plus-square",
 					css: "webix_primary",
-					label: "Add activity",
+					label: _("Add activity"),
 					gravity: 0.5,
 					click: (() => this.popup.showPopupEditor(null, this.contactId))
 				}
@@ -147,7 +157,11 @@ export default class ContactsInfo extends JetView {
 
 
 	deleteContact() {
-		webix.confirm({text: "Are you sure you want to delete this contact and all related files and activities"}).then(() => {
+		const _ = this.app.getService("locale")._;
+		webix.confirm({
+			text: _("Are you sure you want to delete this contact and all related files and activities"),
+			cancel: _("Cancel")
+		}).then(() => {
 			const activities = [];
 			const files = [];
 			activitiesCollection.data.each((item) => {

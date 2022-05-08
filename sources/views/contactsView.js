@@ -1,13 +1,44 @@
 import {JetView} from "webix-jet";
 
 import contactsCollection from "../models/contacts";
+import statusesCollection from "../models/statuses";
 
 const CONTACTS_LIST_ID = "contacts_list";
+const CONTACTS_FILTER_ID = "contacts_filter";
 
 const dummyPictureUrl = "https://www.vippng.com/png/full/412-4125354_person-circle-comments-profile-icon-png-white-transparent.png";
 
 export default class ContactsView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
+		const inputFilter = {
+			view: "text",
+			localId: CONTACTS_FILTER_ID,
+			placeholder: _("type to find matching contacts"),
+			on: {
+				onTimedKeyPress: () => {
+					const filterValue = this.$$(CONTACTS_FILTER_ID).getValue().toLowerCase();
+					const dateCondition = filterValue[0];
+					this.list.filter((obj) => {
+						if (dateCondition === "=" || dateCondition === ">" || dateCondition === "<") {
+							this.filterByBirthYear(dateCondition, obj.Birthday, filterValue);
+						}
+
+						if (obj.StatusID) {
+							const status = statusesCollection.getItem(obj.StatusID);
+							if (status) {
+								return status.Value.toLowerCase().indexOf(filterValue) !== -1;
+							}
+						}
+
+						const params = [obj.value, obj.Email, obj.Skype, obj.Job, obj.Company, obj.Address];
+						return params.some(item => item.toLowerCase().indexOf(filterValue) !== -1);
+					});
+				}
+			}
+		};
+
 		const contactsList = {
 			view: "list",
 			localId: CONTACTS_LIST_ID,
@@ -29,7 +60,7 @@ export default class ContactsView extends JetView {
 			view: "button",
 			type: "icon",
 			icon: "webix_icon wxi-plus",
-			label: "Add Contact",
+			label: _("Add сontact"),
 			align: "center",
 			css: "webix_primary",
 			click: () => {
@@ -42,6 +73,7 @@ export default class ContactsView extends JetView {
 			cols: [
 				{
 					rows: [
+						inputFilter,
 						contactsList,
 						addContactBtn
 					]
@@ -73,5 +105,20 @@ export default class ContactsView extends JetView {
 		this.on(this.list, "onAfterSelect", (id) => {
 			this.show(`contactsInfo?id=${id}`);
 		});
+	}
+
+	filterByBirthYear(condition, birthday, filterValue) {
+		const year = birthday.getFullYear();
+		const slicedValue = +filterValue.slice(1);
+		switch (condition) {
+			case "=":
+				return year === slicedValue;
+			case ">":
+				return year > slicedValue;
+			case "<":
+				return year < slicedValue;
+			default:
+				return true;
+		}
 	}
 }
