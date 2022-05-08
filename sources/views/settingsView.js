@@ -23,7 +23,11 @@ export default class SettingsView extends JetView {
 								{id: "ru", value: "ru-RU"}
 							],
 							click() {
-								webix.delay(() => locale.setLang((this.getValue())));
+								webix.delay(() => {
+									const lang = this.getValue();
+									locale.setLang(lang);
+									webix.i18n.setLocale(this.config.options.find(obj => (obj.id === lang)).value);
+								});
 							}
 						}
 					]
