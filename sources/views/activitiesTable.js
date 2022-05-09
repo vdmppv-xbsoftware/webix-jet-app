@@ -122,12 +122,12 @@ export default class ActivitiesTableView extends JetView {
 					return this.compareDates(curDate, obj.DueDate);
 				case "tomorrow":
 					return webix.Date.equal(webix.Date.add(webix.Date.dayStart(curDate), 1, "day", true), webix.Date.dayStart(obj.DueDate));
-				case "thisWeek":
+				case "this_week":
 				{
 					const start = webix.Date.weekStart(curDate);
 					return (start <= obj.DueDate && obj.DueDate <= webix.Date.add(start, 6, "day", true));
 				}
-				case "thisMonth":
+				case "this_month":
 					return this.checkMonth(curDate, obj.DueDate);
 				case "all":
 				default:

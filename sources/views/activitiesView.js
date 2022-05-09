@@ -34,8 +34,8 @@ export default class ActivitiesView extends JetView {
 				{id: "completed", value: _("Completed")},
 				{id: "today", value: _("Today")},
 				{id: "tomorrow", value: _("Tomorrow")},
-				{id: "thisWeek", value: _("This week")},
-				{id: "thisMonth", value: _("This month")}
+				{id: "this_week", value: _("This week")},
+				{id: "this_month", value: _("This month")}
 			],
 			multiview: true,
 			value: "all",

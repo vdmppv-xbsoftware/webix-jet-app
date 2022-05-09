@@ -58,7 +58,7 @@ export default {
 	"Activity was successfully added": "Мероприятие было успешно добавлено",
 	"Discard changes?": "Откатить изменения?",
 	"Are you sure you want to remove this item?": "Вы уверены, что хотите удалить этот элемент?",
-	"Are you sure you want to delete this contact and all related files and activities": "Вы уверены, что хотите удалить этот контакт и все связанные файлы и активности?",
+	"Are you sure you want to delete this contact and all related files and activities": "Вы уверены, что хотите удалить этот контакт и все связанные файлы и мероприятия?",
 	"Contact was successfully saved": "Контакт был успешно сохранён",
 	"Are you sure you want to delete this activity? Deleting cannot be undone!": "Вы уверены, что хотите удалить это мероприятие? Удаление не сможет быть отменено!"
 };

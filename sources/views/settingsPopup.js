@@ -8,8 +8,8 @@ const SETTINGS_SAVE_BTN_ID = "settings_save_button";
 const SETTINGS_POPUP_HEADER_ID = "settings_popup_header";
 
 export default class SettingsPopup extends JetView {
-	constructor(app, name, label, collection) {
-		super(app, name);
+	constructor(app, label, collection) {
+		super(app);
 		this.label = label;
 		this.collection = collection;
 	}

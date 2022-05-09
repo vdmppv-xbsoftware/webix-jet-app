@@ -79,6 +79,6 @@ export default class SettingsTable extends JetView {
 	init() {
 		this.datatable = this.$$(SETTINGS_DATATABLE_ID);
 		this.datatable.sync(this.collection);
-		this.popup = this.ui(new SettingsPopup(this.app, "", this.label, this.collection));
+		this.popup = this.ui(new SettingsPopup(this.app, this.label, this.collection));
 	}
 }
