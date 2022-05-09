@@ -10,7 +10,7 @@ export default class TopView extends JetView {
 			view: "label",
 			label: _("App"),
 			localId: MENU_HEADER_ID,
-			css: "webix_header app_header"
+			css: "header-text align-center"
 		};
 
 		let menu = {
