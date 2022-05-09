@@ -11,6 +11,7 @@ export default class ActivitiesTableView extends JetView {
 	constructor(app, hide) {
 		super(app);
 		this.hideInfo = hide;
+		this.tabbarValue = "all";
 	}
 
 	config() {
@@ -27,8 +28,8 @@ export default class ActivitiesTableView extends JetView {
 					header: "",
 					width: 40,
 					template: "{common.checkbox()}",
-					checkValue: "Open",
-					uncheckValue: "Close"
+					checkValue: "Close",
+					uncheckValue: "Open"
 				},
 				{
 					id: "TypeID",
@@ -79,7 +80,10 @@ export default class ActivitiesTableView extends JetView {
 				"wxi-pencil": (e, id) => this.popup.showPopupEditor(id, this.hideInfo)
 			},
 			on: {
-				onAfterFilter: () => this.filterTableByContact(this.contactId)
+				onAfterFilter: () => {
+					this.filterTableByContact(this.contactId);
+					this.filterTableByTabbar();
+				}
 			}
 		};
 
@@ -91,13 +95,45 @@ export default class ActivitiesTableView extends JetView {
 		this.datatable.sync(activitiesCollection);
 
 		this.contactId = this.getParam("id");
-		this.filterTableByContact(this.contactId);
 
 		this.on(activitiesCollection.data, "onStoreUpdated", () => {
+			this.filterTableByContact(this.contactId);
+			this.filterTableByTabbar(this.tabbarValue);
 			this.datatable.filterByAll();
 		});
 
 		this.popup = this.ui(PopupEditor);
+	}
+
+	filterTableByAll(tab) {
+		this.tabbarValue = tab;
+		this.datatable.filterByAll();
+	}
+
+	filterTableByTabbar() {
+		const curDate = new Date();
+		this.datatable.filter((obj) => {
+			switch (this.tabbarValue) {
+				case "overdue":
+					return obj.DueDate < curDate && obj.State === "Open";
+				case "completed":
+					return obj.State === "Close";
+				case "today":
+					return this.compareDates(curDate, obj.DueDate);
+				case "tomorrow":
+					return webix.Date.equal(webix.Date.add(webix.Date.dayStart(curDate), 1, "day", true), webix.Date.dayStart(obj.DueDate));
+				case "thisWeek":
+				{
+					const start = webix.Date.weekStart(curDate);
+					return (start <= obj.DueDate && obj.DueDate <= webix.Date.add(start, 6, "day", true));
+				}
+				case "thisMonth":
+					return this.checkMonth(curDate, obj.DueDate);
+				case "all":
+				default:
+					return true;
+			}
+		}, null, true);
 	}
 
 	urlChange() {
@@ -118,6 +154,10 @@ export default class ActivitiesTableView extends JetView {
 			webix.Date.dayStart(value).getTime(),
 			webix.Date.dayStart(filter).getTime()
 		);
+	}
+
+	checkMonth(value, filter) {
+		return webix.Date.dateToStr("%Y.%m")(value) === webix.Date.dateToStr("%Y.%m")(filter);
 	}
 
 	filterTableByContact(id) {

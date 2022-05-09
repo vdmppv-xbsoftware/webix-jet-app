@@ -23,8 +23,31 @@ export default class ActivitiesView extends JetView {
 			]
 		};
 
+		const activitiesTable = new ActivitiesTableView(this.app);
+
+		const activitiesTabbar = {
+			view: "tabbar",
+			borderless: false,
+			options: [
+				{id: "all", value: _("All")},
+				{id: "overdue", value: _("Overdue")},
+				{id: "completed", value: _("Completed")},
+				{id: "today", value: _("Today")},
+				{id: "tomorrow", value: _("Tomorrow")},
+				{id: "thisWeek", value: _("This week")},
+				{id: "thisMonth", value: _("This month")}
+			],
+			multiview: true,
+			value: "all",
+			on: {
+				onAfterTabClick: (tab) => {
+					activitiesTable.filterTableByAll(tab);
+				}
+			}
+		};
+
 		return {
-			rows: [activitiesHeader, ActivitiesTableView]
+			rows: [activitiesHeader, activitiesTabbar, activitiesTable]
 		};
 	}
 

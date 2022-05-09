@@ -70,8 +70,8 @@ export default class PopupEditor extends JetView {
 						name: "State",
 						labelRight: _("Completed"),
 						labelWidth: 0,
-						checkValue: "Open",
-						uncheckValue: "Close"
+						checkValue: "Close",
+						uncheckValue: "Open"
 					},
 					{
 						cols: [
