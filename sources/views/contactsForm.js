@@ -179,7 +179,6 @@ export default class ContactsForm extends JetView {
 			localId: CONTACTS_FORM_ID,
 			borderless: true,
 			autoheight: true,
-			margin: 30,
 			rows: [
 				contactsFormHeader,
 				{
