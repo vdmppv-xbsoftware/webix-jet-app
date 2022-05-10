@@ -227,11 +227,13 @@ export default class ContactsForm extends JetView {
 		this.contactId = this.getParam("id");
 		if (this.contactId) {
 			const item = contactsCollection.getItem(this.contactId);
-			this.contactform.setValues(item);
-			this.contactphoto.setValues({Photo: item.Photo});
-			this.header.config.label = _("Edit contact");
-			this.header.refresh();
-			this.savebtn.setValue(_("Save"));
+			if (item) {
+				this.contactform.setValues(item);
+				this.contactphoto.setValues({Photo: item.Photo});
+				this.header.config.label = _("Edit contact");
+				this.header.refresh();
+				this.savebtn.setValue(_("Save"));
+			}
 		}
 		else {
 			this.header.config.label = _("Add сontact");

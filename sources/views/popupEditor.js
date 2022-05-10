@@ -35,7 +35,7 @@ export default class PopupEditor extends JetView {
 						name: "TypeID",
 						label: _("Type"),
 						options: activityTypesCollection,
-						invalidMessage: "Type selection is required"
+						invalidMessage: _("Type selection is required")
 					},
 					{
 						view: "select",
@@ -43,7 +43,7 @@ export default class PopupEditor extends JetView {
 						localId: CONTACT_FIELD_ID,
 						label: _("Contact"),
 						options: contactsCollection,
-						invalidMessage: "Contact name is required"
+						invalidMessage: _("Contact name is required")
 					},
 					{
 						margin: 20,
@@ -54,14 +54,14 @@ export default class PopupEditor extends JetView {
 								name: "DueDate",
 								label: _("Date"),
 								format: webix.Date.dateToStr("%d %F %Y"),
-								invalidMessage: "Date selection is required"
+								invalidMessage: _("Date selection is required")
 							},
 							{
 								view: "datepicker",
 								type: "time",
 								name: "Time",
 								label: _("Time"),
-								invalidMessage: "Time selection is required"
+								invalidMessage: _("Time selection is required")
 							}
 						]
 					},

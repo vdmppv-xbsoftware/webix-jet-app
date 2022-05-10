@@ -22,19 +22,34 @@ export default class ContactsView extends JetView {
 					const dateCondition = filterValue[0];
 					this.list.filter((obj) => {
 						if (dateCondition === "=" || dateCondition === ">" || dateCondition === "<") {
-							this.filterByBirthYear(dateCondition, obj.Birthday, filterValue);
+							if (obj.Birthday && filterValue.length === 5) {
+								const year = obj.Birthday.getFullYear();
+								const slicedValue = +filterValue.slice(1);
+								switch (dateCondition) {
+									case "=":
+										return year === slicedValue;
+									case ">":
+										return year > slicedValue;
+									case "<":
+										return year < slicedValue;
+									default:
+										return true;
+								}
+							}
 						}
 
 						if (obj.StatusID) {
 							const status = statusesCollection.getItem(obj.StatusID);
-							if (status) {
-								return status.Value.toLowerCase().indexOf(filterValue) !== -1;
+							if (status && status.Value.toLowerCase().indexOf(filterValue) !== -1) {
+								return true;
 							}
 						}
 
 						const params = [obj.value, obj.Email, obj.Skype, obj.Job, obj.Company, obj.Address];
 						return params.some(item => item.toLowerCase().indexOf(filterValue) !== -1);
 					});
+
+					this.list.select(this.list.getFirstId());
 				}
 			}
 		};
@@ -95,6 +110,7 @@ export default class ContactsView extends JetView {
 		});
 
 		this.on(this.app, "onContactSelect", (id) => {
+			this.list.unselectAll();
 			if (id) this.list.select(id);
 			else {
 				const firstItem = this.list.getFirstId();
@@ -105,20 +121,5 @@ export default class ContactsView extends JetView {
 		this.on(this.list, "onAfterSelect", (id) => {
 			this.show(`contactsInfo?id=${id}`);
 		});
-	}
-
-	filterByBirthYear(condition, birthday, filterValue) {
-		const year = birthday.getFullYear();
-		const slicedValue = +filterValue.slice(1);
-		switch (condition) {
-			case "=":
-				return year === slicedValue;
-			case ">":
-				return year > slicedValue;
-			case "<":
-				return year < slicedValue;
-			default:
-				return true;
-		}
 	}
 }
