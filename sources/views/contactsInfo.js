@@ -159,8 +159,7 @@ export default class ContactsInfo extends JetView {
 	deleteContact() {
 		const _ = this.app.getService("locale")._;
 		webix.confirm({
-			text: _("Are you sure you want to delete this contact and all related files and activities"),
-			cancel: _("Cancel")
+			text: _("Are you sure you want to delete this contact and all related files and activities")
 		}).then(() => {
 			const activities = [];
 			const files = [];

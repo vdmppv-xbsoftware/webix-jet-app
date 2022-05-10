@@ -88,8 +88,7 @@ export default class PopupEditor extends JetView {
 								click: () => {
 									if (this.form.isDirty()) {
 										webix.confirm({
-											text: _("Discard changes?"),
-											cancel: _("Cancel")
+											text: _("Discard changes?")
 										}).then(() => this.closeForm());
 									}
 									else {

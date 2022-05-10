@@ -55,8 +55,7 @@ export default class SettingsPopup extends JetView {
 								click: () => {
 									if (this.settingsPopupForm.isDirty()) {
 										webix.confirm({
-											text: _("Discard changes?"),
-											cancel: _("Cancel")
+											text: _("Discard changes?")
 										}).then(() => this.closePopup());
 									}
 									else {

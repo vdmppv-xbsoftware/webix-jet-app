@@ -26,7 +26,6 @@ export default class SettingsView extends JetView {
 								webix.delay(() => {
 									const lang = this.getValue();
 									locale.setLang(lang);
-									webix.i18n.setLocale(this.config.options.find(obj => (obj.id === lang)).value);
 								});
 							}
 						}
