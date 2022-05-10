@@ -12,12 +12,14 @@ const CONTACT_SAVE_BTN_ID = "contact_save_btn";
 
 export default class ContactsForm extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const contactsFormHeader = {
 			view: "label",
 			localId: CONTACTS_FORM_HEADER_ID,
 			padding: 30,
 			margin: 10,
-			label: "Add contact",
+			label: _("Add сontact"),
 			css: "form-header"
 		};
 
@@ -28,25 +30,25 @@ export default class ContactsForm extends JetView {
 				{
 					view: "text",
 					name: "FirstName",
-					label: "First Name",
+					label: _("First Name"),
 					required: true
 				},
 				{
 					view: "text",
 					name: "LastName",
-					label: "Last Name",
+					label: _("Last Name"),
 					required: true
 				},
 				{
 					view: "datepicker",
 					name: "StartDate",
-					label: "Joining Date",
+					label: _("Joining Date"),
 					required: true
 				},
 				{
 					view: "richselect",
 					name: "StatusID",
-					label: "Status",
+					label: _("Status"),
 					options: {
 						body: {
 							data: statusesCollection,
@@ -58,24 +60,24 @@ export default class ContactsForm extends JetView {
 				{
 					view: "text",
 					name: "Job",
-					label: "Job",
+					label: _("Job"),
 					required: true
 				},
 				{
 					view: "text",
 					name: "Company",
-					label: "Company",
+					label: _("Company"),
 					required: true
 				},
 				{
 					view: "text",
 					name: "Website",
-					label: "Website"
+					label: _("Website")
 				},
 				{
 					view: "text",
 					name: "Address",
-					label: "Address"
+					label: _("Address")
 				}
 			]
 		};
@@ -94,7 +96,7 @@ export default class ContactsForm extends JetView {
 						{ },
 						{
 							view: "uploader",
-							value: "Change photo",
+							value: _("Change photo"),
 							width: 200,
 							autosend: false,
 							multiple: false,
@@ -107,7 +109,7 @@ export default class ContactsForm extends JetView {
 						{
 							view: "button",
 							width: 200,
-							value: "Delete photo",
+							value: _("Delete photo"),
 							css: "webix_danger",
 							click: () => {
 								this.$$(CONTACT_PHOTO_ID).setValues({Photo: ""});
@@ -136,13 +138,13 @@ export default class ContactsForm extends JetView {
 				{
 					view: "text",
 					name: "Phone",
-					label: "Phone",
+					label: _("Phone"),
 					required: true
 				},
 				{
 					view: "datepicker",
 					name: "Birthday",
-					label: "Birthday",
+					label: _("Birthday"),
 					required: true
 				},
 				photoSection
@@ -157,14 +159,14 @@ export default class ContactsForm extends JetView {
 			elements: [
 				{
 					view: "button",
-					value: "Cancel",
+					value: _("Cancel"),
 					width: 100,
 					click: () => this.cancelForm()
 				},
 				{
 					view: "button",
 					localId: CONTACT_SAVE_BTN_ID,
-					value: "Add",
+					value: _("Add"),
 					width: 100,
 					css: "webix_primary",
 					click: () => this.saveContact()
@@ -177,7 +179,6 @@ export default class ContactsForm extends JetView {
 			localId: CONTACTS_FORM_ID,
 			borderless: true,
 			autoheight: true,
-			margin: 20,
 			rows: [
 				contactsFormHeader,
 				{
@@ -198,7 +199,7 @@ export default class ContactsForm extends JetView {
 				}
 			],
 			elementsConfig: {
-				labelWidth: 100
+				labelWidth: 135
 			},
 			rules: {
 				Phone: webix.rules.isNumber,
@@ -214,6 +215,7 @@ export default class ContactsForm extends JetView {
 	}
 
 	urlChange() {
+		const _ = this.app.getService("locale")._;
 		this.contactform = this.$$(CONTACTS_FORM_ID);
 
 		this.header = this.$$(CONTACTS_FORM_HEADER_ID);
@@ -224,16 +226,18 @@ export default class ContactsForm extends JetView {
 		this.contactId = this.getParam("id");
 		if (this.contactId) {
 			const item = contactsCollection.getItem(this.contactId);
-			this.contactform.setValues(item);
-			this.contactphoto.setValues({Photo: item.Photo});
-			this.header.config.label = "Edit contact";
-			this.header.refresh();
-			this.savebtn.setValue("Save");
+			if (item) {
+				this.contactform.setValues(item);
+				this.contactphoto.setValues({Photo: item.Photo});
+				this.header.config.label = _("Edit contact");
+				this.header.refresh();
+				this.savebtn.setValue(_("Save"));
+			}
 		}
 		else {
-			this.header.config.label = "Add contact";
+			this.header.config.label = _("Add сontact");
 			this.header.refresh();
-			this.savebtn.setValue("Add");
+			this.savebtn.setValue(_("Add"));
 		}
 	}
 

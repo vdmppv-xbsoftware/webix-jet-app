@@ -83,9 +83,13 @@
 }
 
 .webix_view .user-name, .form-header .webix_el_box {
-    margin-top: 10px;
-    margin-left: 20px;
+    margin: 0px 0px 10px 20px;
     font-size: 26px;
+}
+
+.header-text .webix_el_box {
+    line-height: 18px;
+    font-size: 24px;
 }
 
 .align-center {

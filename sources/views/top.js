@@ -4,12 +4,13 @@ const MENU_HEADER_ID = "header_menu";
 
 export default class TopView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		let header = {
 			type: "header",
 			view: "label",
-			label: "App",
+			label: _("App"),
 			localId: MENU_HEADER_ID,
-			css: "webix_header app_header"
+			css: "header-text align-center"
 		};
 
 		let menu = {
@@ -21,9 +22,9 @@ export default class TopView extends JetView {
 			select: true,
 			template: "<span class='webix_icon #icon#'></span> #value#",
 			data: [
-				{value: "Contacts", id: "contactsView", icon: "wxi-user"},
-				{value: "Activities", id: "activitiesView", icon: "wxi-calendar"},
-				{value: "Settings", id: "settingsView", icon: "mdi mdi-cogs"}
+				{value: _("Contacts"), id: "contactsView", icon: "wxi-user"},
+				{value: _("Activities"), id: "activitiesView", icon: "wxi-calendar"},
+				{value: _("Settings"), id: "settingsView", icon: "mdi mdi-cogs"}
 			],
 			on: {
 				onAfterSelect: () => {

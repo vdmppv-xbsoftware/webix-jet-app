@@ -1,13 +1,61 @@
 import {JetView} from "webix-jet";
 
 import contactsCollection from "../models/contacts";
+import statusesCollection from "../models/statuses";
 
 const CONTACTS_LIST_ID = "contacts_list";
+const CONTACTS_FILTER_ID = "contacts_filter";
 
 const dummyPictureUrl = "https://www.vippng.com/png/full/412-4125354_person-circle-comments-profile-icon-png-white-transparent.png";
 
 export default class ContactsView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
+		const inputFilter = {
+			view: "text",
+			localId: CONTACTS_FILTER_ID,
+			placeholder: _("type to find matching contacts"),
+			on: {
+				onTimedKeyPress: () => {
+					const filterValue = this.$$(CONTACTS_FILTER_ID).getValue().toLowerCase();
+					const dateCondition = filterValue[0];
+					this.list.filter((obj) => {
+						if (dateCondition === "=" || dateCondition === ">" || dateCondition === "<") {
+							if (obj.Birthday && filterValue.length === 5) {
+								const year = obj.Birthday.getFullYear();
+								const slicedValue = +filterValue.slice(1);
+								switch (dateCondition) {
+									case "=":
+										return year === slicedValue;
+									case ">":
+										return year > slicedValue;
+									case "<":
+										return year < slicedValue;
+									default:
+										return true;
+								}
+							}
+						}
+
+						const status = obj.StatusID ? statusesCollection.getItem(obj.StatusID).Value : "";
+
+						const params = [obj.value, obj.Email, obj.Skype, obj.Job,
+							obj.Company, obj.Address, status];
+
+						for (let i = 0; i < params.length; i++) {
+							if (params[i].toString().toLowerCase().indexOf(filterValue) !== -1) {
+								return true;
+							}
+						}
+						return false;
+					});
+
+					this.list.select(this.list.getFirstId());
+				}
+			}
+		};
+
 		const contactsList = {
 			view: "list",
 			localId: CONTACTS_LIST_ID,
@@ -29,7 +77,7 @@ export default class ContactsView extends JetView {
 			view: "button",
 			type: "icon",
 			icon: "webix_icon wxi-plus",
-			label: "Add Contact",
+			label: _("Add сontact"),
 			align: "center",
 			css: "webix_primary",
 			click: () => {
@@ -42,6 +90,7 @@ export default class ContactsView extends JetView {
 			cols: [
 				{
 					rows: [
+						inputFilter,
 						contactsList,
 						addContactBtn
 					]
@@ -63,6 +112,7 @@ export default class ContactsView extends JetView {
 		});
 
 		this.on(this.app, "onContactSelect", (id) => {
+			this.list.unselectAll();
 			if (id) this.list.select(id);
 			else {
 				const firstItem = this.list.getFirstId();
