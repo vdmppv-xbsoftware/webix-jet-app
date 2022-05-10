@@ -38,15 +38,17 @@ export default class ContactsView extends JetView {
 							}
 						}
 
-						if (obj.StatusID) {
-							const status = statusesCollection.getItem(obj.StatusID);
-							if (status && status.Value.toLowerCase().indexOf(filterValue) !== -1) {
+						const status = obj.StatusID ? statusesCollection.getItem(obj.StatusID).Value : "";
+
+						const params = [obj.value, obj.Email, obj.Skype, obj.Job,
+							obj.Company, obj.Address, status];
+
+						for (let i = 0; i < params.length; i++) {
+							if (params[i].toString().toLowerCase().indexOf(filterValue) !== -1) {
 								return true;
 							}
 						}
-
-						const params = [obj.value, obj.Email, obj.Skype, obj.Job, obj.Company, obj.Address];
-						return params.some(item => item.toLowerCase().indexOf(filterValue) !== -1);
+						return false;
 					});
 
 					this.list.select(this.list.getFirstId());
