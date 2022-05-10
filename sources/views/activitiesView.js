@@ -40,9 +40,7 @@ export default class ActivitiesView extends JetView {
 			multiview: true,
 			value: "all",
 			on: {
-				onAfterTabClick: (tab) => {
-					activitiesTable.filterTableByAll(tab);
-				}
+				onAfterTabClick: tab => this.app.callEvent("onFilterTableByTabbar", [tab])
 			}
 		};
 

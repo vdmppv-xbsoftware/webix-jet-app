@@ -103,11 +103,11 @@ export default class ActivitiesTableView extends JetView {
 		});
 
 		this.popup = this.ui(PopupEditor);
-	}
 
-	filterTableByAll(tab) {
-		this.tabbarValue = tab;
-		this.datatable.filterByAll();
+		this.on(this.app, "onFilterTableByTabbar", (tab) => {
+			this.tabbarValue = tab;
+			this.datatable.filterByAll();
+		});
 	}
 
 	filterTableByTabbar() {
